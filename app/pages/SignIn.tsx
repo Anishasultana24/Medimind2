@@ -5,14 +5,17 @@ import {
     TextInput,
     TouchableOpacity,
     ToastAndroid,
+    ActivityIndicator,
   } from "react-native";
   import React, { useState, useEffect } from "react";
   import { useNavigation, useRouter } from "expo-router";
   import Ionicons from "@expo/vector-icons/Ionicons";
+  import { authService } from '../services/api';
   
   export default function SignIn() {
     const router = useRouter();
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
   
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,18 +26,21 @@ import {
       });
     }, []);
   
-    const handleSignIn = () => {
+    const handleSignIn = async () => {
       if (!email.trim() || !password.trim()) {
         ToastAndroid.show("Please enter both email and password", ToastAndroid.SHORT);
         return;
       }
   
-      // Add your API call or auth logic here
-      if (email === "test@example.com" && password === "password123") {
+      try {
+        setLoading(true);
+        await authService.login({ email, password });
         ToastAndroid.show("Signed in successfully!", ToastAndroid.SHORT);
-        router.replace("/Appointment"); // Navigate to home or your desired screen
-      } else {
-        ToastAndroid.show("Invalid email or password", ToastAndroid.SHORT);
+        router.replace("/Appointment");
+      } catch (error: any) {
+        ToastAndroid.show(error.message || "Invalid email or password", ToastAndroid.SHORT);
+      } finally {
+        setLoading(false);
       }
     };
   
@@ -74,8 +80,16 @@ import {
         </View>
   
         {/* Sign In Button */}
-        <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-          <Text style={styles.signInText}>Sign In</Text>
+        <TouchableOpacity 
+          style={styles.signInButton} 
+          onPress={handleSignIn}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.signInText}>Sign In</Text>
+          )}
         </TouchableOpacity>
   
         {/* Create Account */}
@@ -126,6 +140,8 @@ import {
       backgroundColor: "black",
       borderRadius: 15,
       marginTop: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     signInText: {
       color: "white",
