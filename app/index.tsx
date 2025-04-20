@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#1B4965',
     paddingVertical: 8,
-    paddingHorizontal: 18,
+    paddingHorizontal:20,
     borderRadius: 12,
     marginLeft: 10,
   },
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: '#164e83',
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 25,
     borderRadius: 30,
     marginTop: 24,
     shadowColor: '#000',
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statsNumber: {
-    fontSize: 32,
+    fontSize: 30,
     // fontWeight: 'bold',
     fontFamily: 'Kameron-SemiBold',
   },
